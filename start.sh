@@ -3,8 +3,11 @@
 # exit when any command fails
 set -e
 
-/opt/ardb/src/ardb-server /opt/ardb/ardb.conf >> /var/log/ardb/ardb.log &
+mkdir /var/log/ardb
+mkdir /var/log/dynomite
 
-/opt/dynomite/src/dynomite --conf-file=/opt/dynomite/conf/dynomite.yml -v11 -o /var/log/dynomite/dynomite.log &
+/ardb/src/ardb-server /ardb/ardb.conf >> /var/log/ardb/ardb.log &
+
+/dynomite/src/dynomite --conf-file=/dynomite/conf/single.yml -v11 -o /var/log/dynomite/dynomite.log &
 
 tail -F /var/log/ardb/ardb.log /var/log/dynomite/dynomite.log
