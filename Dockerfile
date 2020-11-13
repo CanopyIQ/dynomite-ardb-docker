@@ -17,7 +17,8 @@ WORKDIR /
 RUN git clone -b 'v0.6.12' --single-branch --depth 1 https://github.com/Netflix/dynomite.git
 
 # https://circleci.com/docs/2.0/high-uid-error/
-RUN git clone https://github.com/yinqiwen/ardb.git --single-branch --depth 1 && cd /ardb/ && \
+RUN git clone https://github.com/yinqiwen/ardb.git --single-branch --depth 1 && \
+  cd /ardb/ && \
   storage_engine=lmdb make CXX='g++ -w' && \
   chown -R root:root /ardb
 
