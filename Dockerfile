@@ -18,6 +18,9 @@ RUN git clone -b 'v0.6.12' --single-branch --depth 1 https://github.com/Netflix/
 
 RUN git clone https://github.com/yinqiwen/ardb.git --single-branch --depth 1 && cd /ardb/ &&  storage_engine=lmdb make CXX='g++ -w'
 
+# https://circleci.com/docs/2.0/high-uid-error/
+RUN chown -R root:root /ardb
+
 COPY single.yml /dynomite/conf/single.yml
 
 WORKDIR /dynomite/
