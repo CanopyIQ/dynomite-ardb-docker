@@ -16,7 +16,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /
 RUN git clone -b 'v0.6.12' --single-branch --depth 1 https://github.com/Netflix/dynomite.git
 
-RUN git clone https://github.com/yinqiwen/ardb.git --single-branch --depth 1 && cd /ardb/ &&  storage_engine=lmdb make CXX='g++ -w'
+# https://circleci.com/docs/2.0/high-uid-error/
+RUN git clone https://github.com/yinqiwen/ardb.git --single-branch --depth 1 && cd /ardb/ && \
+  storage_engine=lmdb make CXX='g++ -w' && \
+  chown -R root:root /ardb
 
 COPY single.yml /dynomite/conf/single.yml
 
@@ -37,9 +40,6 @@ ADD start.sh /usr/local/dynomite/
 RUN chmod +x /usr/local/dynomite/start.sh
 
 COPY ardb.conf /ardb/src/ardb.conf
-
-# https://circleci.com/docs/2.0/high-uid-error/
-RUN chown -R root:root /ardb
 
 VOLUME /ardb/src/data
 
